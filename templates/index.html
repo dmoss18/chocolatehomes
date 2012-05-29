@@ -1,1 +1,9 @@
-Stuff goes here
+{% if house_data %}
+    <ul>
+    {% for house in house_data %}
+      <li>{{ house.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No houses are available.</p>
+{% endif %}
