@@ -8,5 +8,9 @@ libraries:
 - name: django
   version: "1.2"
 
+handlers:
+- url: /media
+  static_dir: assets/media
+
 builtins:
 - django_wsgi: on
