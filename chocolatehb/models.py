@@ -9,7 +9,7 @@ class Area(models.Model):
 
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=50)
-    area_id = models.ForeignKey(Area)
+    area = models.ForeignKey(Area)
     order = models.IntegerField(unique=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
@@ -17,8 +17,8 @@ class Category(models.Model):
 class Customization(models.Model):
     name = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=500)
-    area_id = models.ForeignKey(Area)
-    category_id = models.ForeignKey(Category)
+    area = models.ForeignKey(Area)
+    category = models.ForeignKey(Category)
     order = models.IntegerField(unique=True)
     dependency = models.BigIntegerField(blank=True)
     instructions = models.CharField(max_length=500)
@@ -34,9 +34,9 @@ class Options(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=8)
     manufacturer = models.CharField(max_length=200)
     warranty = models.CharField(max_length=200)
-    category_id = models.ForeignKey(Category)
-    area_id = models.ForeignKey(Area)
-    customization_id = models.ForeignKey(Customization)
+    category = models.ForeignKey(Category)
+    area = models.ForeignKey(Area)
+    customization = models.ForeignKey(Customization)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
@@ -51,11 +51,11 @@ class Client(models.Model):
 
 class House(models.Model):
     name = models.CharField(max_length=50)
-    client_id = models.ForeignKey(Client)
+    client = models.ForeignKey(Client)
 	
 class HouseOption(models.Model):
-    option_id = models.ForeignKey(Options)
-    house_id = models.ForeignKey(House)
+    option = models.ForeignKey(Options)
+    house = models.ForeignKey(House)
     selected = models.BooleanField(default=False)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
