@@ -10,7 +10,7 @@ libraries:
 
 handlers:
 - url: /media
-  static_dir: assets/media
+  static_dir: assets/admin
 
 builtins:
 - django_wsgi: on
