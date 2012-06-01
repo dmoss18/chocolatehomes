@@ -1,4 +1,4 @@
-{% load i18n adminmedia %}
+{% load i18n adminmedia custom_filters chocolatehomes.chocolatehb %}
 <div class="inline-group" id="{{ inline_admin_formset.formset.prefix }}-group">
   <div class="tabular inline-related {% if forloop.last %}last-related{% endif %}">
 {{ inline_admin_formset.formset.management_form }}
@@ -24,7 +24,7 @@
              id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
         <td class="original">
           {% if inline_admin_form.original or inline_admin_form.show_url %}<p>
-          {% if inline_admin_form.original %}<a href="/admin/chocolatehb/option/1">{{ inline_admin_form.original }}</a>{% endif %}
+          {% if inline_admin_form.original %}<a href="/admin/chocolatehb/{{inline_admin_form.original|to_class_name}}/{{inline_admin_form.original.id}}">{{ inline_admin_form.original }}</a>{% endif %}
           {% if inline_admin_form.show_url %}<a href="../../../r/{{ inline_admin_form.original_content_type_id }}/{{ inline_admin_form.original.id }}/">{% trans "View on site" %}</a>{% endif %}
             </p>{% endif %}
           {% if inline_admin_form.has_auto_field %}{{ inline_admin_form.pk_field.field }}{% endif %}
