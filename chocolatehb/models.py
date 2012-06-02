@@ -12,18 +12,23 @@ class Area(models.Model):
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=50)
     area = models.ForeignKey(Area)
-    order = models.IntegerField(unique=True)
+    order = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        unique_together = ['area', 'order']
+        ordering = ['area', 'order']
+        order_with_respect_to = 'area'
+        verbose_name_plural = "categories"
+
 class Customization(models.Model):
     name = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=500)
-    area = models.ForeignKey(Area)
     category = models.ForeignKey(Category)
-    order = models.IntegerField(unique=True)
+    order = models.IntegerField()
     depends_on_customization = models.ForeignKey('self', blank=True, null=True)
     instructions = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
@@ -31,22 +36,30 @@ class Customization(models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        unique_together = ['category', 'order']
+        ordering = ['category', 'order']
+        order_with_respect_to = 'category'
+
 class Option(models.Model):
     name = models.CharField(max_length=50)
     long_description = models.CharField(max_length=500)
     short_description = models.CharField(max_length=100)
-    order = models.IntegerField(unique=True)
+    order = models.IntegerField()
     default = models.BooleanField(default=False)
     price = models.DecimalField(decimal_places=2, max_digits=8)
     manufacturer = models.CharField(max_length=200)
     warranty = models.CharField(max_length=200)
-    category = models.ForeignKey(Category)
-    area = models.ForeignKey(Area)
     customization = models.ForeignKey(Customization)
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        unique_together = ['customization', 'order']
+        ordering = ['customization', 'order']
+        order_with_respect_to = 'customization'
 
 class Client(models.Model):
     username = models.CharField(max_length=50)

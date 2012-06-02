@@ -17,11 +17,19 @@ class OptionInline(admin.TabularInline):
     model = Option
     extra = 1
 
+class AreaAdmin(admin.ModelAdmin):
+    list_display = ['name', 'order']
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'order']
+
 class CustomizationAdmin(admin.ModelAdmin):
     list_filter = ('category',)
+    list_display = ['name', 'order']
     inlines = [OptionInline]
 
 class OptionAdmin(admin.ModelAdmin):
+    list_display = ['name', 'order']
     inlines = [OptionDependencyInline]
 
 admin.site.register(Area)
