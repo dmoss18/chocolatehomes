@@ -13,6 +13,30 @@ import settings
 
 from chocolatehb.models import *
 
+
+####
+###
+##Clear out any old data that might exist
+#
+areas_to_delete = Area.objects.all()
+#Deleting an area should delete all its dependent children (category, customization, option, houseoption, image)
+for a in areas_to_delete:
+    print("Deleting area: " + a.name)
+    a.delete()
+
+page_types_to_delete = PageType.objects.all()
+#Deleting a pagetype should delete all its dependent children (customization, imagetype, image)
+for p in page_types_to_delete:
+    print("Deleting pagetype: " + p.name)
+    p.delete()
+
+
+
+
+####
+###
+##Populate database with new values
+#
 page_types = ["Full Page", "Pallette Page", "Tile Page"]
 full_page = ["mainThumb", "mainLarge"]
 pallette_page = ["Swatch", "Large"]
@@ -22,6 +46,7 @@ pTypesList = []
 
 for p in page_types:
     pType = PageType(name=p)
+    print("Saving PageType: " + pType.name)
     pType.save()
     pTypesList.append(pType)
 
@@ -30,21 +55,41 @@ p = pTypesList[0]
 iwidth=50
 iheight=50
 iType = ImageType(name=full_page[0], page_type=p, width=iwidth, height=iheight)
+print("Saving ImageType: " + iType.name)
+iType.save()
 iType = ImageType(name=full_page[1], page_type=p, width=iwidth, height=iheight)
+print("Saving ImageType: " + iType.name)
+iType.save()
+
 x = 1
 #while(x <= 4):
 iType = ImageType(name="alt" + str(x) + "Large", page_type=p, width=iwidth, height=iheight)
+print("Saving ImageType: " + iType.name)
+iType.save()
 iType = ImageType(name="alt" + str(x) + "Thumb", page_type=p, width=iwidth, height=iheight)
+print("Saving ImageType: " + iType.name)
+iType.save()
 
 #Pallette Page Image Type Creation
 p = pTypesList[1]
 iType = ImageType(name=pallette_page[0], page_type=p, width=iwidth, height=iheight)
+print("Saving ImageType: " + iType.name)
+iType.save()
 iType = ImageType(name=pallette_page[1], page_type=p, width=iwidth, height=iheight)
+print("Saving ImageType: " + iType.name)
+iType.save()
 
 #Tile Page Image Type Creation
 p = pTypesList[2]
 iType = ImageType(name=tile_page[0], page_type=p, width=iwidth, height=iheight)
+print("Saving ImageType: " + iType.name)
+iType.save()
 iType = ImageType(name=tile_page[1], page_type=p, width=iwidth, height=iheight)
+print("Saving ImageType: " + iType.name)
+iType.save()
+
+
+
 
 areas = ["Interior"]
 categories = ["Cabinets", "Floors", "Walls", "Windows"]
