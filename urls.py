@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     # Example:
     # (r'^chocolatehomes/', include('chocolatehomes.foo.urls')),
     (r'^$', 'chocolatehb.views.index'),
+    (r'^admin/chocolatehb/option/(?P<option_id>\d+)/images', 'chocolatehb.views.upload_images'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),

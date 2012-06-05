@@ -17,6 +17,10 @@ class OptionInline(admin.TabularInline):
     model = Option
     extra = 1
 
+class ImageInline(admin.TabularInline):
+    model = Image
+    extra = 1
+
 class AreaAdmin(admin.ModelAdmin):
     list_display = ['name', 'order']
 
@@ -24,13 +28,33 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'order']
 
 class CustomizationAdmin(admin.ModelAdmin):
+    #fieldsets = (
+    #    ('category', { 
+    #        'fields': ('name', 'order')
+    #    }),
+    #)
     list_filter = ('category',)
-    list_display = ['name', 'order']
+    list_display = ['name', 'order', 'category']
+    ordering = ['category', 'order']
     inlines = [OptionInline]
+
+    def category_name(self, obj):
+        return obj.category
+    category_name.short_description = 'Category'
 
 class OptionAdmin(admin.ModelAdmin):
     list_display = ['name', 'order']
-    inlines = [OptionDependencyInline]
+    #fieldsets = (
+    #    (None, {
+    #        'fields': ('name', 'long_description', 'short_description', 'order', 'default', 'price', 'manufacturer', 'warranty', 'customization'),
+    #        'description': ('<a href=\"stuff\">To Images</a>')
+    #    }),
+    #)
+        
+    inlines = [OptionDependencyInline, ImageInline]
+
+    def image_link(self, obj):
+        return '<a href=\"stuff\">' + obj.name + '</a>'
 
 admin.site.register(Area)
 admin.site.register(Category)

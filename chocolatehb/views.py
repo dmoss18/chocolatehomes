@@ -5,3 +5,6 @@ from chocolatehb.models import House
 def index(request):
     house_data = House.objects.all()
     return render_to_response('index.html', {'house_data': house_data})
+
+def upload_images(request, option_id):
+    return render_to_response('admin/upload_images.html', {})

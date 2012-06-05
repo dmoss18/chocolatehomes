@@ -13,11 +13,48 @@ import settings
 
 from chocolatehb.models import *
 
+page_types = ["Full Page", "Pallette Page", "Tile Page"]
+full_page = ["mainThumb", "mainLarge"]
+pallette_page = ["Swatch", "Large"]
+tile_page = ["Tile", "Large"]
+
+pTypesList = []
+
+for p in page_types:
+    pType = PageType(name=p)
+    pType.save()
+    pTypesList.append(pType)
+
+#Full Page Image Type Creation
+p = pTypesList[0]
+iwidth=50
+iheight=50
+iType = ImageType(name=full_page[0], page_type=p, width=iwidth, height=iheight)
+iType = ImageType(name=full_page[1], page_type=p, width=iwidth, height=iheight)
+x = 1
+#while(x <= 4):
+iType = ImageType(name="alt" + str(x) + "Large", page_type=p, width=iwidth, height=iheight)
+iType = ImageType(name="alt" + str(x) + "Thumb", page_type=p, width=iwidth, height=iheight)
+
+#Pallette Page Image Type Creation
+p = pTypesList[1]
+iType = ImageType(name=pallette_page[0], page_type=p, width=iwidth, height=iheight)
+iType = ImageType(name=pallette_page[1], page_type=p, width=iwidth, height=iheight)
+
+#Tile Page Image Type Creation
+p = pTypesList[2]
+iType = ImageType(name=tile_page[0], page_type=p, width=iwidth, height=iheight)
+iType = ImageType(name=tile_page[1], page_type=p, width=iwidth, height=iheight)
+
 areas = ["Interior"]
 categories = ["Cabinets", "Floors", "Walls", "Windows"]
 customizations = ["Kitchen", "Bedroom"]
 
 for a in areas:
+    #new_area = Area.objects.get(name=a)
+    #if new_area:
+    #    break
+
     new_area = Area(name=a)
     print("Saving area: " + new_area.name)
     new_area.save()
@@ -30,12 +67,22 @@ for a in areas:
         cat_order += 1
 
         cust_order = 1
+        cust_pType = True
         for cu in customizations:
+            if cust_pType:
+                #Full page
+                p = PageType.objects.get(name=page_types[0])
+            else:
+                #Pallette Page
+                p = PageType.objects.get(name=page_types[1])
+
             cu = cu + ' ' + c
-            cust = Customization(name=cu, description=cu, category=cat, order=cust_order, instructions=cu)
+            cust = Customization(name=cu, description=cu, category=cat, order=cust_order, instructions=cu, page_type=p)
             print("Saving customization: " + cust.name)
             cust.save()
             cust_order += 1
+
+            cust_pType = not cust_pType
             
             opts = 1
             while(opts <= 4):

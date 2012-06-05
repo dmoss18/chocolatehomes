@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_modify adminmedia %}
+{% load i18n admin_modify adminmedia chocolatehb_filters %}
 
 {% block extrahead %}{{ block.super }}
 {% url admin:jsi18n as jsi18nurl %}
@@ -46,6 +46,14 @@
 {% endfor %}
 
 {% block after_field_sets %}{% endblock %}
+
+{% if opts.object_name == "Option" %}
+  <div style="clear:both;">
+  <br />
+  <a href="images">Upload/Change Images</a>
+  <br />
+  </div>
+{% endif %}
 
 {% for inline_admin_formset in inline_admin_formsets %}
     {% include inline_admin_formset.opts.template %}

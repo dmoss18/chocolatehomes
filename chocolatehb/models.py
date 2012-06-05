@@ -2,6 +2,14 @@ from django.db import models
 import datetime
 
 # Create your models here.
+class PageType(models.Model):
+    name = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
+    updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
+
+    def __unicode__(self):
+        return self.name
+
 class Area(models.Model):
     name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
@@ -25,12 +33,13 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
 class Customization(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, unique=False)
     description = models.CharField(max_length=500)
     category = models.ForeignKey(Category)
     order = models.IntegerField()
     depends_on_customization = models.ForeignKey('self', blank=True, null=True)
     instructions = models.CharField(max_length=500)
+    page_type = models.ForeignKey(PageType)
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
     def __unicode__(self):
@@ -38,7 +47,7 @@ class Customization(models.Model):
 
     class Meta:
         unique_together = ['category', 'order']
-        ordering = ['category', 'order']
+        ordering = ['category']
         order_with_respect_to = 'category'
 
 class Option(models.Model):
@@ -95,3 +104,23 @@ class OptionDependency(models.Model):
     customization_id = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
+
+class ImageType(models.Model):
+    name = models.CharField(max_length=10)
+    page_type = models.ForeignKey(PageType)
+    width = models.IntegerField()
+    height = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
+    updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
+    def __unicode__(self):
+        return self.name
+
+class Image(models.Model):
+    original_name = models.CharField(max_length=50)
+    name = models.CharField(unique=True, max_length=50)
+    image_type = models.ForeignKey(ImageType)
+    option = models.ForeignKey(Option)
+    created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
+    updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
+    def __unicode__(self):
+        return self.original
