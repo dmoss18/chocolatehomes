@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.signals import pre_save
 import datetime
 
 # Create your models here.
@@ -124,3 +125,8 @@ class Image(models.Model):
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
     def __unicode__(self):
         return self.original
+
+def option_dependency_before_save(sender, instance, *args, **kwargs):
+    instance.customization_id = instance.available_option.customization.id
+pre_save.connect(option_dependency_before_save, sender=OptionDependency)
+
