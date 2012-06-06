@@ -1,0 +1,15 @@
+{% load chocolatehb_filters %}
+{% if user %}
+  <h2>Howdy {{ user.nickname }}</h2>
+{% endif %}
+
+<div>
+  {% if user %}
+    <a href="{{ request.path|get_logout_url }}">Logout</a>
+  {% else %}
+    <a href="{{ request|get_login_url }}">Login</a>
+  {% endif %}
+</div>
+
+{% block maincontent %}
+{% endblock maincontent %}

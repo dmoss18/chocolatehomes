@@ -100,6 +100,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'chocolatehb',
+    #'photologue',
     #'django_evolution',
     #'south',
     # Uncomment the next line to enable the admin:

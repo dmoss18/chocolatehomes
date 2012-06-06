@@ -1,0 +1,37 @@
+{%extends 'layout.html'%}
+
+{% block maincontent %}
+
+Welcome New User
+
+<form method="post" action="/welcome.html/">
+{% csrf_token %}
+
+<table>
+{% for field in clientForm %}
+  <tr>
+    <td>{{ field.label_tag }}:</td>
+    <td><div>{{ field }}</div>
+	  {% for error in field.errors %}
+	    <div>{{ error }}</div>
+	  {% endfor %}
+	</td>
+  </tr>
+{% endfor %}
+</table>
+
+<br />
+
+{% for field in clientForm %}
+<p>
+  <div>{{ field.label_tag }}: {{ field }}
+	  {% for error in field.errors %}
+	    &nbsp;&bull;&nbsp;{{ error }}
+	  {% endfor %}
+  </div>
+</p>
+{% endfor %}
+<input type="submit" value="Submit Form"/>
+</form>
+
+{% endblock maincontent %}

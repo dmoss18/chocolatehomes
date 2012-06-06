@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.signals import pre_save
+from django.forms import ModelForm
 import datetime
 
 # Create your models here.
@@ -7,7 +7,7 @@ class PageType(models.Model):
     name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
-
+    
     def __unicode__(self):
         return self.name
 
@@ -26,7 +26,7 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
     def __unicode__(self):
         return self.name
-
+    
     class Meta:
         unique_together = ['area', 'order']
         ordering = ['area', 'order']
@@ -45,7 +45,7 @@ class Customization(models.Model):
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
     def __unicode__(self):
         return self.name
-
+    
     class Meta:
         unique_together = ['category', 'order']
         ordering = ['category']
@@ -65,7 +65,7 @@ class Option(models.Model):
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
     def __unicode__(self):
         return self.name
-
+    
     class Meta:
         unique_together = ['customization', 'order']
         ordering = ['customization', 'order']
@@ -73,8 +73,8 @@ class Option(models.Model):
 
 class Client(models.Model):
     username = models.CharField(max_length=50)
-    google_id = models.BigIntegerField()
-    email = models.EmailField()
+    google_id = models.CharField(unique=True, max_length=50)
+    email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
@@ -126,7 +126,31 @@ class Image(models.Model):
     def __unicode__(self):
         return self.original
 
+
+#################################
+##### Form Classes ##############
+class ClientForm(ModelForm):
+    class Meta:
+        model = Client
+        fields = ['first_name', 'last_name']
+
+
+#################################
+##### Signal Connectors #########
+import logging
+logger = logging.getLogger(__name__)
+
+from django.core.signals import request_started
+from google.appengine.api import users
+def get_current_user(sender,*args, **kwargs):
+    logger.info("request started")
+    user = users.get_current_user()
+    #if sender.request.session.get("client"):
+        #do stuff
+    #    x = 4
+request_started.connect(get_current_user)
+
+from django.db.models.signals import pre_save
 def option_dependency_before_save(sender, instance, *args, **kwargs):
     instance.customization_id = instance.available_option.customization.id
 pre_save.connect(option_dependency_before_save, sender=OptionDependency)
-

@@ -1,9 +1,5 @@
-{% if house_data %}
-    <ul>
-    {% for house in house_data %}
-      <li>{{ house.name }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No houses are available.</p>
-{% endif %}
+{% extends 'layout.html' %}
+
+{% block maincontent %}
+  This is the index page
+{% endblock maincontent %}
