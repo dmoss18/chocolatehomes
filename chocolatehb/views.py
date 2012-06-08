@@ -79,7 +79,7 @@ def new_house(request):
 			h.client = Client.objects.get(email=user.email())
 			h.save()
 			
-			populate_house_defaults(h)
+			#populate_house_defaults(h)
 			
 			cat = Category.objects.get(order=1)
 			logger.info("category is " + cat.name)
@@ -143,12 +143,4 @@ def select_customization(request, house_id, customization_id):
 	
 def show_house(request, house_id):
 	house = House.objects.get(pk=house_id)
-	return render_to_response('chocolatehb/house/show.html', { 'house': house })
-	
-def populate_house_defaults(house):
-	logger.info("in populate_house_defaults, house = " + house.name)
-	options = Option.objects.filter(default=True)
-	if options:
-		for option in options:
-			houseOption = HouseOption(option=option, house=house)
-			houseOption.save()
+	return render_to_response('chocolatehb/house/show.html', { 'house': house, 'options': house.options.all().order_by('customization__category') })

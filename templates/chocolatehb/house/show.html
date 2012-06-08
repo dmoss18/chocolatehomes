@@ -8,7 +8,7 @@ Here is your house
  {{ house }}
 </div>
 <div>
- {% for option in house.options.all %}
+ {% for option in options %}
    <ul>
      <li><a href="{{house.id}}/customizations/{{option.customization.id}}">{{option.customization.name}}</a></li>
     </ul>

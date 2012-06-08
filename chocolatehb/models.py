@@ -90,6 +90,14 @@ class House(models.Model):
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
     def __unicode__(self):
         return self.name
+        
+    def populate_defaults(self):
+        logger.info("in populate_house_defaults, house = " + self.name)
+        options = Option.objects.filter(default=True)
+        if options:
+            for option in options:
+                houseOption = HouseOption(option=option, house=self)
+                houseOption.save()
 
 class HouseOption(models.Model):
     option = models.ForeignKey(Option)
@@ -98,6 +106,7 @@ class HouseOption(models.Model):
     customization_id = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
     updated_at = models.DateTimeField(auto_now_add = True, auto_now = True)
+    
 
 class OptionDependency(models.Model):
     depends_on_option = models.ForeignKey(Option, related_name="depends_on_option")
@@ -159,7 +168,7 @@ def get_current_user(sender,*args, **kwargs):
     #    x = 4
 request_started.connect(get_current_user)
 
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 def option_dependency_before_save(sender, instance, *args, **kwargs):
     instance.customization_id = instance.available_option.customization.id
 pre_save.connect(option_dependency_before_save, sender=OptionDependency)
@@ -167,3 +176,11 @@ pre_save.connect(option_dependency_before_save, sender=OptionDependency)
 def house_option_before_save(sender, instance, *args, **kwargs):
     instance.customization_id = instance.option.customization.id
 pre_save.connect(house_option_before_save, sender=HouseOption)
+
+def house_before_save(sender, instance, *args, **kwargs):
+    #Called when a house has just been saved
+    #If it's the first time saving the house, we need to create all the default houseOptions
+    if not instance.options.all():
+        #No house options.  Call populate_defaults()
+        instance.populate_defaults()
+post_save.connect(house_before_save, sender=House)
