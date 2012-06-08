@@ -9,7 +9,12 @@ Pallette Page Customization
 
 {% for option in options %}
 <p>
-  <div><input type="radio" name="option" value="{{option.id}}" />&nbsp;{{ option.name }}
+  <div>
+    {% if option.id == selectedHouseOption.option_id %}
+      <input type="radio" name="option" value="{{option.id}}" checked/>&nbsp;{{ option.name }}
+    {% else %}
+      <input type="radio" name="option" value="{{option.id}}" />&nbsp;{{ option.name }}
+    {% endif %}
   </div>
 </p>
 {% endfor %}

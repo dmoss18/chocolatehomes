@@ -1,0 +1,22 @@
+{%extends 'layout.html'%}
+
+{% block maincontent %}
+
+Name your house
+
+<form method="post" action="/chocolatehb/house/new">
+{% csrf_token %}
+
+{% for field in houseForm %}
+<p>
+  <div>{{ field.label_tag }}: {{ field }}
+	  {% for error in field.errors %}
+	    &nbsp;&bull;&nbsp;{{ error }}
+	  {% endfor %}
+  </div>
+</p>
+{% endfor %}
+<input type="submit" value="Submit Form"/>
+</form>
+
+{% endblock maincontent %}

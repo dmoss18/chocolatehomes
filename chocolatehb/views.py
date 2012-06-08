@@ -90,20 +90,20 @@ def new_house(request):
 		logger.info("houseform has no data.  Creating from instance")
 		form = HouseForm() # An unbound form
 
-	return render_to_response('new_house.html', { 'houseForm': form, 'user': user}, context_instance=RequestContext(request))
+	return render_to_response('chocolatehb/house/new.html', { 'houseForm': form, 'user': user}, context_instance=RequestContext(request))
 
 def select_customization(request, house_id, customization_id):
 	user = users.get_current_user()
 	logger.info("in select_customization")
 	cust = Customization.objects.get(pk=customization_id)
 	options = Option.objects.filter(customization=cust)
+	houseOption = HouseOption.objects.get(house=house_id,customization_id=cust.id)
 	
 	if request.method == 'POST': # If the form has been submitted...
 		form = HouseOptionForm(request.POST)
 		logger.info("form is created")
 		if form.is_valid():
 			logger.info("form is valid")
-			houseOption = HouseOption.objects.get(house=house_id,customization_id=cust.id)
 			houseOption.option = form.save(commit=False).option
 			houseOption.selected = True
 			houseOption.save()
@@ -139,7 +139,7 @@ def select_customization(request, house_id, customization_id):
 		page_type = "pallette_page"
 	
 	
-	return render_to_response('chocolatehb/customizations/' + page_type + '_customization.html', { 'user': user, 'customization': cust, 'options': options, 'house_id': house_id }, context_instance=RequestContext(request))
+	return render_to_response('chocolatehb/customizations/' + page_type + '_customization.html', { 'user': user, 'customization': cust, 'options': options, 'house_id': house_id, 'selectedHouseOption': houseOption }, context_instance=RequestContext(request))
 	
 def show_house(request, house_id):
 	house = House.objects.get(pk=house_id)

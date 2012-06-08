@@ -11,7 +11,7 @@ urlpatterns = patterns('chocolatehb.views',
     (r'^welcome\.html/', 'welcome'),
     (r'^chocolatehb/house/(?P<house_id>\d+)/customizations/(?P<customization_id>\d+)', 'select_customization'),
     (r'^chocolatehb/house/(?P<house_id>\d+)', 'show_house'),
-    (r'^chocolatehb/house/', 'new_house'),
+    (r'^chocolatehb/house/new', 'new_house'),
 )
 
 
