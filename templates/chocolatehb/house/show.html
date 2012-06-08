@@ -1,0 +1,18 @@
+{%extends 'layout.html'%}
+
+{% block maincontent %}
+
+Here is your house
+
+<div>
+ {{ house }}
+</div>
+<div>
+ {% for option in house.options.all %}
+   <ul>
+     <li><a href="{{house.id}}/customizations/{{option.customization.id}}">{{option.customization.name}}</a></li>
+    </ul>
+ {% endfor %}
+</div>
+
+{% endblock maincontent %}

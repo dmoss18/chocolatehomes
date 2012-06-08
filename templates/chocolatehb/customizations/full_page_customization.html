@@ -1,0 +1,19 @@
+{%extends 'layout.html'%}
+
+{% block maincontent %}
+
+Full Page Template
+
+<form method="post" action="/chocolatehb/house/{{house_id}}/customizations/{{customization.id}}">
+{% csrf_token %}
+
+{% for option in options %}
+<p>
+  <div><input type="radio" name="option" value="{{option.id}}" />&nbsp;{{ option.name }}
+  </div>
+</p>
+{% endfor %}
+<input type="submit" value="Submit Form"/>
+</form>
+
+{% endblock maincontent %}

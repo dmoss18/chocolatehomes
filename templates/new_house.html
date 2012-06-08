@@ -2,12 +2,12 @@
 
 {% block maincontent %}
 
-Welcome New User
+Name your house
 
-<form method="post" action="/welcome.html/">
+<form method="post" action="/chocolatehb/house/">
 {% csrf_token %}
 
-{% for field in clientForm %}
+{% for field in houseForm %}
 <p>
   <div>{{ field.label_tag }}: {{ field }}
 	  {% for error in field.errors %}

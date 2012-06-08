@@ -133,7 +133,16 @@ class ClientForm(ModelForm):
     class Meta:
         model = Client
         fields = ['first_name', 'last_name']
+        
+class HouseForm(ModelForm):
+    class Meta:
+        model = House
+        fields = ['name']
 
+class HouseOptionForm(ModelForm):
+	class Meta:
+		model = HouseOption
+		fields = ['option']
 
 #################################
 ##### Signal Connectors #########
@@ -154,3 +163,7 @@ from django.db.models.signals import pre_save
 def option_dependency_before_save(sender, instance, *args, **kwargs):
     instance.customization_id = instance.available_option.customization.id
 pre_save.connect(option_dependency_before_save, sender=OptionDependency)
+
+def house_option_before_save(sender, instance, *args, **kwargs):
+    instance.customization_id = instance.option.customization.id
+pre_save.connect(house_option_before_save, sender=HouseOption)
