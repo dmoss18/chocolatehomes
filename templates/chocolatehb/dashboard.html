@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block maincontent %}
+
+<h2>Hello {{ user.nickname }}</h2>
+
+{% if house_data %}
+    <ul>
+    {% for house in house_data %}
+      <li><a href="/house/{{house.id}}">{{ house.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No houses are available.</p>
+{% endif %}
+
+<a href="/house/new">New House</a>
+
+{% endblock maincontent %}

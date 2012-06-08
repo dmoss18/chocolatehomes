@@ -6,12 +6,12 @@ admin.autodiscover()
 
 urlpatterns = patterns('chocolatehb.views',
     (r'^$', 'index'),
-    (r'^dashboard\.html/', 'dashboard'),
+    (r'^dashboard', 'dashboard'),
     (r'^admin/chocolatehb/option/(?P<option_id>\d+)/images', 'upload_images'),
-    (r'^welcome\.html/', 'welcome'),
-    (r'^chocolatehb/house/(?P<house_id>\d+)/customizations/(?P<customization_id>\d+)', 'select_customization'),
-    (r'^chocolatehb/house/(?P<house_id>\d+)', 'show_house'),
-    (r'^chocolatehb/house/new', 'new_house'),
+    (r'^welcome', 'welcome'),
+    (r'^house/(?P<house_id>\d+)/customizations/(?P<customization_id>\d+)', 'select_customization'),
+    (r'^house/(?P<house_id>\d+)', 'show_house'),
+    (r'^house/new', 'new_house'),
 )
 
 

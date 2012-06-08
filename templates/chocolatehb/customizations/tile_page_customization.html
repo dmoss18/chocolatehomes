@@ -4,7 +4,7 @@
 
 Tile Page Customization
 
-<form method="post" action="/chocolatehb/house/{{house_id}}/customizations/{{customization.id}}">
+<form method="post" action="/house/{{house_id}}/customizations/{{customization.id}}">
 {% csrf_token %}
 
 {% for option in options %}

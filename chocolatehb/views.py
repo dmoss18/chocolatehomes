@@ -18,7 +18,7 @@ def index(request):
 	#if user:
 		#response['Content-Type'] = 'text/plain'
 		#response.write('Hello, ' + user.nickname())
-	return render_to_response('index.html', {'house_data': house_data, 'user': user})
+	return render_to_response('chocolatehb/index.html', {'house_data': house_data, 'user': user})
 	#else:
 		#return redirect(users.create_login_url(request.path))
 		#return render_to_response('index.html', {'house_data': house_data })
@@ -41,9 +41,9 @@ def dashboard(request):
 	if c:
 		logger.info("In dashboard, if client" + request.path)
 		house_data = House.objects.filter(client=c)
-		return render_to_response('dashboard.html', {'house_data': house_data, 'user': user})
+		return render_to_response('chocolatehb/dashboard.html', {'house_data': house_data, 'user': user})
 	else:
-		return redirect('/welcome.html')
+		return redirect('/welcome')
 
 def welcome(request):
 	user = users.get_current_user()
@@ -60,12 +60,12 @@ def welcome(request):
 			c.username = user.nickname()
 			c.google_id = user.user_id()
 			c.save()
-			return redirect('/dashboard.html/') # Redirect after POST
+			return redirect('/dashboard') # Redirect after POST
 	else:
 		logger.info("form has no data.  Creating from instance")
 		form = ClientForm() # An unbound form
 
-	return render_to_response('welcome.html', { 'clientForm': form, 'user': user}, context_instance=RequestContext(request))
+	return render_to_response('chocolatehb/welcome.html', { 'clientForm': form, 'user': user}, context_instance=RequestContext(request))
 
 def new_house(request):
 	user = users.get_current_user()
@@ -85,7 +85,7 @@ def new_house(request):
 			logger.info("category is " + cat.name)
 			customization = Customization.objects.get(category=cat, order=1)
 			logger.info("customization is " + customization.name)
-			return redirect('/chocolatehb/house/' + str(h.id) + '/customizations/' + str(customization.id)) # Redirect after POST
+			return redirect('/house/' + str(h.id) + '/customizations/' + str(customization.id)) # Redirect after POST
 	else:
 		logger.info("houseform has no data.  Creating from instance")
 		form = HouseForm() # An unbound form
@@ -115,19 +115,19 @@ def select_customization(request, house_id, customization_id):
 				if(cust.category.order == 1):
 					#User just saved last customization of a new house (1st category)
 					#So we send them back to a generic page
-					return redirect('/chocolatehb/house/' + str(house_id))
+					return redirect('/house/' + str(house_id))
 				cat_array = Category.objects.filter(order=cust.category.order + 1)
 				if(cat_array):
 					#There is another category, so we pull the next one
 					cat = Category.objects.get(order=cust.category.order+1)
 					cust = Customization.objects.get(category=cat,order=1)
-					return redirect('/chocolatehb/house/' + str(house_id) + '/customizations/' + str(cust.id))
+					return redirect('/house/' + str(house_id) + '/customizations/' + str(cust.id))
 				else:
 					#We hit the last category, so we need to navigate somewhere else
-					return redirect('/chocolatehb/house/' + str(house_id))
+					return redirect('/house/' + str(house_id))
 			else:
 				cust = Customization.objects.get(category=cust.category,order=cust.order + 1)
-				return redirect('/chocolatehb/house/' + str(house_id) + '/customizations/' + str(cust.id))
+				return redirect('/house/' + str(house_id) + '/customizations/' + str(cust.id))
 
 	page_type = "full_page"
 
